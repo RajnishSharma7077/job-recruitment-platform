@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f7f2">
+    <meta name="description" content="Explore the role details and take the next step with Workplace.">
+    <title>Role details — Workplace</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/app.js" defer></script>
+</head>
+<body data-page="job-detail">
+<header class="topbar">
+    <a class="brand" href="/" aria-label="Workplace home"><span class="brand-mark">w.</span> workplace</a>
+    <nav class="main-nav" aria-label="Main navigation">
+        <a class="nav-current" href="/jobs.html" aria-current="page">Find a job</a>
+        <a href="/employers.html">For employers</a>
+    </nav>
+    <div class="top-actions">
+        <span id="account-label" class="account-label" hidden></span>
+        <button id="dashboard-button" class="button button-quiet" type="button" hidden>Dashboard</button>
+        <button id="signout-button" class="button button-quiet" type="button" hidden>Sign out</button>
+        <button id="signin-button" class="button button-dark" type="button">Sign in</button>
+    </div>
+</header>
+
+<main>
+    <section class="detail-page">
+        <a class="back-link" href="/jobs.html">← Back to all opportunities</a>
+        <p id="detail-error" class="notice notice-error" hidden></p>
+        <div id="detail-loading" class="detail-loading">Finding the details…</div>
+        <div id="job-detail-content" hidden>
+            <header class="detail-hero">
+                <div class="detail-company-row">
+                    <span id="detail-company-badge" class="company-badge company-badge-large" aria-hidden="true"></span>
+                    <span><span id="detail-company" class="detail-company-name"></span><span class="detail-company-note">A Workplace opportunity</span></span>
+                    <button id="detail-save" class="button button-outline detail-save" type="button" aria-pressed="false">♡ <span>Save role</span></button>
+                </div>
+                <p class="eyebrow eyebrow-muted">THE RIGHT NEXT STEP</p>
+                <h1 id="detail-title"></h1>
+                <p class="detail-intro">A thoughtful opportunity with a team building what’s next.</p>
+                <div id="detail-facts" class="detail-facts"></div>
+                <div class="detail-actions">
+                    <button id="detail-apply" class="button button-green" type="button">Apply for this role <span>↗</span></button>
+                    <span id="detail-status" class="status-pill"></span>
+                </div>
+            </header>
+
+            <div class="detail-layout">
+                <article class="detail-body">
+                    <section>
+                        <p class="eyebrow eyebrow-muted">ABOUT THE ROLE</p>
+                        <h2>Make an impact with your work.</h2>
+                        <p id="detail-description" class="detail-description"></p>
+                    </section>
+                    <section class="detail-what">
+                        <p class="eyebrow eyebrow-muted">THE OPPORTUNITY</p>
+                        <h2>Bring your perspective.</h2>
+                        <p>This team is looking for someone who is curious, thoughtful, and ready to make a meaningful contribution. Share your experience and what you could bring to the role when you apply.</p>
+                    </section>
+                    <section class="detail-how">
+                        <p class="eyebrow eyebrow-muted">GOOD TO KNOW</p>
+                        <ul>
+                            <li>Role and employment details are provided by the hiring team.</li>
+                            <li>Review the location and experience expectations before applying.</li>
+                            <li>Keep your resume link accessible to the recruiting team.</li>
+                        </ul>
+                    </section>
+                </article>
+                <aside class="detail-aside">
+                    <div class="detail-aside-card">
+                        <p class="eyebrow eyebrow-muted">A ROLE THAT COULD FIT</p>
+                        <h3 id="aside-title"></h3>
+                        <p id="aside-copy"></p>
+                        <button id="aside-apply" class="button button-green button-full" type="button">Start an application <span>↗</span></button>
+                    </div>
+                    <a class="detail-aside-link" href="/jobs.html">Keep exploring open roles <span>↗</span></a>
+                </aside>
+            </div>
+        </div>
+    </section>
+    <section class="detail-bottom-cta">
+        <div><p class="eyebrow">YOUR NEXT CHAPTER STARTS SOMEWHERE</p><h2>Explore work that feels like you.</h2></div>
+        <a class="button button-light" href="/jobs.html">Browse all opportunities <span>↗</span></a>
+    </section>
+</main>
+
+<footer class="footer">
+    <a class="brand" href="/"><span class="brand-mark">w.</span> workplace</a>
+    <span>Find work that feels like yours.</span>
+    <span><a href="/employers.html">For employers</a> · Built for what’s next <b>✳</b></span>
+</footer>
+
+<dialog id="auth-dialog" class="dialog">
+    <button class="dialog-close" data-close-dialog="auth-dialog" type="button" aria-label="Close">×</button>
+    <p class="eyebrow eyebrow-muted">WELCOME TO WORKPLACE</p>
+    <h2 id="auth-title">Good to have you here.</h2>
+    <div class="auth-tabs" role="tablist">
+        <button class="auth-tab is-active" id="login-tab" type="button" role="tab" aria-selected="true">Sign in</button>
+        <button class="auth-tab" id="register-tab" type="button" role="tab" aria-selected="false">Create account</button>
+    </div>
+    <form id="auth-form" class="form-stack">
+        <label id="name-field" hidden>Your name<input name="name" autocomplete="name" placeholder="e.g. Alex Morgan"></label>
+        <label>Email address<input name="email" type="email" autocomplete="email" placeholder="you@example.com" required></label>
+        <label>Password<input name="password" type="password" autocomplete="current-password" minlength="8" placeholder="At least 8 characters" required></label>
+        <label id="role-field" hidden>Your account type
+            <select name="role"><option value="CANDIDATE">I’m looking for work</option><option value="RECRUITER">I’m hiring</option></select>
+        </label>
+        <p id="auth-error" class="form-error" hidden></p>
+        <button id="auth-submit" class="button button-green button-full" type="submit">Sign in <span>↗</span></button>
+    </form>
+    <section id="demo-access" class="demo-access" hidden aria-label="Try the local demo">
+        <div class="demo-access-heading">
+            <span class="eyebrow eyebrow-muted">TAKE A LOOK AROUND</span>
+            <button class="demo-guide-link" type="button" data-open-guide>How Workplace works</button>
+        </div>
+        <p class="demo-access-intro">Explore the product using a ready-made sample profile.</p>
+        <div id="demo-profile-list" class="demo-profile-list"></div>
+        <p class="demo-local-note"><span>✳</span> Local demo only. Sample changes may reset when the app restarts.</p>
+    </section>
+    <p class="dialog-footnote">By continuing, you agree to use Workplace thoughtfully.</p>
+</dialog>
+<dialog id="apply-dialog" class="dialog">
+    <button class="dialog-close" data-close-dialog="apply-dialog" type="button" aria-label="Close">×</button>
+    <p class="eyebrow eyebrow-muted">TAKE THE NEXT STEP</p>
+    <h2>Apply for this role.</h2><p id="apply-job-title" class="dialog-subtitle"></p>
+    <form id="apply-form" class="form-stack">
+        <label>Resume link<input name="resumeUrl" type="url" placeholder="https://…" required></label>
+        <p class="field-help">Add a shareable link to your resume. Make sure recruiters can view it.</p>
+        <p id="apply-error" class="form-error" hidden></p>
+        <button class="button button-green button-full" type="submit">Send application <span>↗</span></button>
+    </form>
+</dialog>
+<dialog id="guide-dialog" class="dialog guide-dialog">
+    <button class="dialog-close" data-close-dialog="guide-dialog" type="button" aria-label="Close">×</button>
+    <p class="eyebrow eyebrow-muted">A QUICK TOUR</p>
+    <h2>One place, two ways forward.</h2>
+    <div class="guide-steps">
+        <article class="guide-step"><span>01</span><div><h3>Looking for your next role?</h3><p>Search and sort openings, save roles for later, and apply with a resume link. Your application status lives in your candidate dashboard.</p></div></article>
+        <article class="guide-step"><span>02</span><div><h3>Building a team?</h3><p>Visit the employer space to post an opening, review its applications, and manage your roles from the recruiter dashboard.</p></div></article>
+        <article class="guide-step"><span>03</span><div><h3>Just exploring?</h3><p>Browse public listings first. Sign in or create an account when you’re ready to save, apply, or hire.</p></div></article>
+    </div>
+    <div class="guide-actions"><a class="button button-green" href="/jobs.html">Explore jobs <span>↗</span></a><a class="button button-outline" href="/employers.html">For employers <span>↗</span></a></div>
+</dialog>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

@@ -1,0 +1,9 @@
+target/
+oracleJdk-27.jdk/
+.idea/
+.vscode/
+*.iml
+.DS_Store
+.env
+.env.*
+!.env.example
