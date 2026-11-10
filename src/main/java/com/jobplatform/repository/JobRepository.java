@@ -27,11 +27,9 @@ public interface JobRepository extends JpaRepository<Job, Long> {
     @EntityGraph(attributePaths = {"company", "postedBy"})
     @Query("""
             select j from Job j
-            where (:keyword is null
-                or lower(j.title) like lower(concat('%', :keyword, '%'))
+            where (lower(j.title) like lower(concat('%', :keyword, '%'))
                 or lower(j.description) like lower(concat('%', :keyword, '%')))
-              and (:location is null
-                or lower(j.location) like lower(concat('%', :location, '%')))
+              and lower(j.location) like lower(concat('%', :location, '%'))
               and (:minExperience is null
                 or j.minExperience is null
                 or j.minExperience <= :minExperience)

@@ -30,6 +30,10 @@ class BackendReliabilityIntegrationTest {
                 .andExpect(jsonPath("$.totalElements").value(19))
                 .andExpect(jsonPath("$.totalPages").value(4));
 
+        mockMvc.perform(get("/api/jobs/search").param("size", "5"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalElements").value(19));
+
         mockMvc.perform(get("/api/jobs/search")
                         .param("keyword", "Java Backend")
                         .param("size", "5"))
