@@ -45,7 +45,8 @@ async function api(path, options = {}) {
     if (options.body && !headers.has("Content-Type")) headers.set("Content-Type", "application/json");
     if (state.token) headers.set("Authorization", `Bearer ${state.token}`);
 
-    const response = await fetch(path, { ...options, headers });
+    const apiBase = window.WORKPLACE_API_BASE || "";
+    const response = await fetch(`${apiBase}${path}`, { ...options, headers });
     const body = await response.text();
     let data = null;
     if (body) {

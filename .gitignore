@@ -1,4 +1,5 @@
 target/
+dist/
 oracleJdk-27.jdk/
 .idea/
 .vscode/

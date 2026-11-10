@@ -67,6 +67,25 @@ docker compose ps
 
 The Compose setup keeps PostgreSQL data in a named volume, waits for the database health check before starting the app, restarts failed containers, and binds the app to localhost so a TLS-enabled reverse proxy can sit in front. It is a starting point for one host, not a substitute for managed database backups, monitoring, firewalling, TLS, or a tested disaster-recovery plan. Back up PostgreSQL with `pg_dump` to storage outside the host and periodically test a restore.
 
+### Deploy the API to Render and the website to Vercel
+
+The static website and Spring API can be hosted separately. The frontend build reads `WORKPLACE_API_URL` and writes it into `runtime-config.js`; the Spring API uses `APP_CORS_ALLOWED_ORIGINS` to allow requests from the exact Vercel origin.
+
+1. In Render, create a persistent PostgreSQL database and a Docker web service connected to this repository. Use the repository root and the included `Dockerfile`. Keep the database and web service in the same region.
+2. Set the Render web service environment variables:
+   - `SPRING_PROFILES_ACTIVE=prod`
+   - `SPRING_DATASOURCE_URL=jdbc:postgresql://<internal-host>:5432/<database>?sslmode=require` (use the host and database name shown by Render; never paste credentials into source files)
+   - `DB_USERNAME` and `DB_PASSWORD` from the PostgreSQL service
+   - `JWT_SECRET` to a generated secret of at least 32 bytes
+   - `APP_CORS_ALLOWED_ORIGINS` to the exact Vercel production origin, for example `https://your-project.vercel.app`
+   - Optional `JOBPLATFORM_ADMIN_EMAIL` and `JOBPLATFORM_ADMIN_PASSWORD` if you need to bootstrap an administrator
+3. Wait for the Render health check at `/actuator/health` to pass. The first boot runs Flyway migrations; the production PostgreSQL role must be allowed to create the `pg_trgm` extension, or the extension must be enabled by the database owner before deploying.
+4. In Vercel, import the same GitHub repository. Use the repository root, let `vercel.json` select the static output, and set `WORKPLACE_API_URL` to the Render service origin (for example `https://your-api.onrender.com`, with no `/api` suffix). Deploy and copy the exact Vercel origin.
+5. If the Vercel origin changed, update `APP_CORS_ALLOWED_ORIGINS` on Render and redeploy/restart the API. Test sign-in, job search/detail, candidate applications, and recruiter dashboards on the deployed site.
+6. Replace the deployment links in this README with the final URLs after both services are live. Do not commit credentials, private database URLs, or generated `.env` files.
+
+Render and Vercel plans, sleeping behavior, database persistence, and backup retention depend on the plan selected in each account. Choose plans intentionally; free/temporary databases are not suitable for durable production data. Protect the PostgreSQL database with automated backups and test restore before inviting real users.
+
 ### Capacity and operations
 
 - Job searches, recruiter job lists, and application lists are database-paginated (20 rows by default, maximum 100). The jobs page fetches additional pages on demand.
