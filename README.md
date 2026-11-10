@@ -71,6 +71,14 @@ The Compose setup keeps PostgreSQL data in a named volume, waits for the databas
 
 The static website and Spring API can be hosted separately. The frontend build reads `WORKPLACE_API_URL` and writes it into `runtime-config.js`; the Spring API uses `APP_CORS_ALLOWED_ORIGINS` to allow requests from the exact Vercel origin.
 
+Current deployment:
+
+- Website: https://job-recruitment-platform-gamma.vercel.app
+- API: https://job-recruitment-platform-api-gupf.onrender.com
+- API health: https://job-recruitment-platform-api-gupf.onrender.com/actuator/health
+
+These services currently use Render's free web-service and PostgreSQL plans. The web service can spin down when idle, causing cold-start delays. The free PostgreSQL database is temporary and is scheduled to expire on December 10, 2026; Render will delete it unless it is upgraded. Do not store production or irreplaceable data there. Move to a persistent database and configure backups before that date.
+
 1. In Render, create a persistent PostgreSQL database and a Docker web service connected to this repository. Use the repository root and the included `Dockerfile`. Keep the database and web service in the same region.
 2. Set the Render web service environment variables:
    - `SPRING_PROFILES_ACTIVE=prod`
@@ -82,7 +90,7 @@ The static website and Spring API can be hosted separately. The frontend build r
 3. Wait for the Render health check at `/actuator/health` to pass. The first boot runs Flyway migrations; the production PostgreSQL role must be allowed to create the `pg_trgm` extension, or the extension must be enabled by the database owner before deploying.
 4. In Vercel, import the same GitHub repository. Use the repository root, let `vercel.json` select the static output, and set `WORKPLACE_API_URL` to the Render service origin (for example `https://your-api.onrender.com`, with no `/api` suffix). Deploy and copy the exact Vercel origin.
 5. If the Vercel origin changed, update `APP_CORS_ALLOWED_ORIGINS` on Render and redeploy/restart the API. Test sign-in, job search/detail, candidate applications, and recruiter dashboards on the deployed site.
-6. Replace the deployment links in this README with the final URLs after both services are live. Do not commit credentials, private database URLs, or generated `.env` files.
+6. Update the deployment links above if either service URL changes. Do not commit credentials, private database URLs, or generated `.env` files.
 
 Render and Vercel plans, sleeping behavior, database persistence, and backup retention depend on the plan selected in each account. Choose plans intentionally; free/temporary databases are not suitable for durable production data. Protect the PostgreSQL database with automated backups and test restore before inviting real users.
 
