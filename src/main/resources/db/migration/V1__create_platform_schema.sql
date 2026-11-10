@@ -22,7 +22,7 @@ CREATE TABLE jobs (
     employment_type VARCHAR(255) NOT NULL,
     min_experience INTEGER,
     salary_range VARCHAR(255),
-    salary_sort_value DOUBLE,
+    salary_sort_value DOUBLE PRECISION,
     created_at TIMESTAMP NOT NULL,
     status VARCHAR(255) NOT NULL,
     company_id BIGINT NOT NULL,
